@@ -21,9 +21,9 @@ namespace WellCarePharmacyWebapi.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ProductRequest>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductRequest>>> GetAllProducts()
         {
-            return Ok(_repositoryWrapper.Products.GetAll());
+            return Ok(await _repositoryWrapper.Products.GetAll());
         }
 
 
@@ -31,46 +31,88 @@ namespace WellCarePharmacyWebapi.Controllers
         [HttpDelete("id")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product= _repositoryWrapper.Products.GetById(id);
+            var product=  await _repositoryWrapper.Products.GetById(id);
             if(product == null)
             {
                 return NotFound();
             }
 
-            _repositoryWrapper.Products.Delete(id);
+            await _repositoryWrapper.Products.Delete(id);
             _repositoryWrapper.Save();
             return NoContent();
 
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<ProductRequest> PostProduct([FromBody] ProductRequest product)
+        public async Task<ActionResult<ProductRequest>> PostProduct([FromBody] ProductRequest product)
         {
             if (product == null)
             {
-                return NotFound();
+                return BadRequest(product);
             }
+          
             Products products = new Products
             {
-                Id = product.Id,
+               
                 ProductName = product.ProductName,
                 Price = product.Price,
-                Discount=product.Discount,
-                Descripition=product.Descripition,
+                Discount = product.Discount,
+                Descripition = product.Descripition,
                 Status = product.Status,
-                ImageUrl=product.ImageUrl,
+                ImageUrl = product.ImageUrl,
+
 
             };
-
-            _repositoryWrapper.Products.Create(products);
+            await _repositoryWrapper.Products.Create(products);
+            product.Id = products.Id;
             _repositoryWrapper.Save();
-            return Ok(products);
+            return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
+
+           
         }
 
-      
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("id" , Name ="GetProduct")]
+        public async Task<IActionResult> GetProduct(int id)
+        {
+            var value = await _repositoryWrapper.Products.GetById(id);
+            if(value==null)
+            {
+                return NotFound();
+            }
+            return Ok(value);
+        }
+
+        [HttpPut("id")]
+        public async Task<IActionResult> UpdateProduct(int id,[FromBody]ProductRequest product)
+        {
+           
+          
+                var productsid = await _repositoryWrapper.Products.GetById(product.Id);
+               if (product == null)
+                 {
+                return NotFound();
+                 }
+            productsid.ProductName = product.ProductName;
+                productsid.Price = product.Price;
+                productsid.Discount = product.Discount;
+                productsid.Descripition = product.Descripition;
+                productsid.Status = product.Status;
+                productsid.ImageUrl = product.ImageUrl;
+                await _repositoryWrapper.Products.Update(productsid);
+
+                return Ok(productsid);
+                
+
+
+
+
+        }
 
 
     }

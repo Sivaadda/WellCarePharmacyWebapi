@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using WellCarePharmacyWebapi.Models.Entities.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WellCarePharmacyWebapi.Models.Entities
 {
@@ -23,9 +24,13 @@ namespace WellCarePharmacyWebapi.Models.Entities
 
         public DateTime RegisteredOn { get; set; }
 
-        [Required]
-        public Role Role { get; set; }
 
-        public ICollection<Orders> Orders { get; set; }
+        public int RoleId { get; set; }
+        [ForeignKey("RoleId")]
+        public virtual Role Roles { get; set; }
+       
+
+        
     }
 }
+    

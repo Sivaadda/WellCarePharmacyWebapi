@@ -12,8 +12,8 @@ using WellCarePharmacyWebapi.Models.Context;
 namespace WellCarePharmacyWebapi.Migrations
 {
     [DbContext(typeof(WellCareDC))]
-    [Migration("20230508062655_initial")]
-    partial class initial
+    [Migration("20230517140625_addseeding")]
+    partial class addseeding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,10 @@ namespace WellCarePharmacyWebapi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ProductsId")
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -41,16 +44,23 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductsId");
+                    b.HasIndex("OrderId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            OrderId = 1,
+                            ProductId = 3,
+                            Quantity = 3,
+                            TotalPrice = 345m
+                        });
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Products", b =>
@@ -88,6 +98,68 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 7,
+                            Descripition = "soap made with charcoal",
+                            Discount = 45m,
+                            ImageUrl = "iwyer",
+                            Price = 0f,
+                            ProductName = "Active Charcoal Soap",
+                            Status = "Available"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Descripition = "soap made with charcoal",
+                            Discount = 45m,
+                            ImageUrl = "iwyer",
+                            Price = 0f,
+                            ProductName = "Active Soap",
+                            Status = "NotAvailable"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Descripition = "soap made with charcoal",
+                            Discount = 45m,
+                            ImageUrl = "iwyer",
+                            Price = 0f,
+                            ProductName = "Active Charcoal Soap",
+                            Status = "Available"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Descripition = "soap made with charcoal",
+                            Discount = 45m,
+                            ImageUrl = "iwyer",
+                            Price = 0f,
+                            ProductName = "Active Soap",
+                            Status = "NotAvailable"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Descripition = "soap made with charcoal",
+                            Discount = 45m,
+                            ImageUrl = "iwyer",
+                            Price = 0f,
+                            ProductName = "Active Charcoal Soap",
+                            Status = "Available"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Descripition = "soap made with charcoal",
+                            Discount = 45m,
+                            ImageUrl = "iwyer",
+                            Price = 0f,
+                            ProductName = "Active Soap",
+                            Status = "NotAvailable"
+                        });
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Role", b =>
@@ -106,6 +178,18 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RoleName = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Users", b =>
@@ -146,19 +230,41 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "siva@gmail.com",
+                            Name = "siva",
+                            Password = "12345",
+                            PhoneNumber = 99,
+                            RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "siva@gmail.com",
+                            Name = "siva",
+                            Password = "12345",
+                            PhoneNumber = 99,
+                            RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 2
+                        });
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Orders", b =>
                 {
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Products", "Products")
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Users", "Users")
                         .WithMany()
-                        .HasForeignKey("ProductsId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Users", "Users")
-                        .WithMany("Orders")
-                        .HasForeignKey("UsersId")
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Products", "Products")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -169,23 +275,18 @@ namespace WellCarePharmacyWebapi.Migrations
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Users", b =>
                 {
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Role", "Role")
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Role", "Roles")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Role", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Users", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

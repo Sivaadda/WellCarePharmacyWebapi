@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WellCarePharmacyWebapi.Migrations
 {
-    public partial class initial : Migration
+    public partial class initialDATA : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -70,37 +70,37 @@ namespace WellCarePharmacyWebapi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UsersId = table.Column<int>(type: "int", nullable: false),
-                    ProductsId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Products_ProductsId",
-                        column: x => x.ProductsId,
+                        name: "FK_Orders_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Users_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_Orders_Users_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_ProductsId",
+                name: "IX_Orders_OrderId",
                 table: "Orders",
-                column: "ProductsId");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UsersId",
+                name: "IX_Orders_ProductId",
                 table: "Orders",
-                column: "UsersId");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",

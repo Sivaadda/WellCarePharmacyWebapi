@@ -12,8 +12,8 @@ using WellCarePharmacyWebapi.Models.Context;
 namespace WellCarePharmacyWebapi.Migrations
 {
     [DbContext(typeof(WellCareDC))]
-    [Migration("20230515120817_addingseedingofproducts")]
-    partial class addingseedingofproducts
+    [Migration("20230518072721_changeinorders")]
+    partial class changeinorders
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,21 +24,6 @@ namespace WellCarePharmacyWebapi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("OrdersProducts", b =>
-                {
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdersId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("OrdersProducts");
-                });
-
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Orders", b =>
                 {
                     b.Property<int>("Id")
@@ -46,6 +31,9 @@ namespace WellCarePharmacyWebapi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -58,9 +46,21 @@ namespace WellCarePharmacyWebapi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("UsersId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ProductId = 3,
+                            Quantity = 3,
+                            TotalPrice = 345m,
+                            UsersId = 1
+                        });
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Products", b =>
@@ -230,53 +230,63 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
 
-            modelBuilder.Entity("OrdersProducts", b =>
-                {
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Orders", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Products", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "siva@gmail.com",
+                            Name = "siva",
+                            Password = "12345",
+                            PhoneNumber = 99,
+                            RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "siva@gmail.com",
+                            Name = "siva",
+                            Password = "12345",
+                            PhoneNumber = 99,
+                            RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 2
+                        });
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Orders", b =>
                 {
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Products", "Products")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WellCarePharmacyWebapi.Models.Entities.Users", "Users")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Products");
 
                     b.Navigation("Users");
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Users", b =>
                 {
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Role", "Role")
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Role", "Roles")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Role", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Users", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

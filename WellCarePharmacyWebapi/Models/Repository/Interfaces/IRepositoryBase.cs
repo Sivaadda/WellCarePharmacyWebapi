@@ -2,16 +2,19 @@
 {
     public interface IRepositoryBase<T> where T : class
     {
-        IEnumerable<T> GetAll();
-      
-        void Create(T entity);
-        void  Update(T entity);
 
-        void Delete(int id);
-        T GetById(int id);
+       Task<IEnumerable<T>> GetAll();
 
-        void Save();
+       Task<T> Create(T entity);
+
+       Task Update(T entity);
+
+       Task<T> Delete(int id);
+
+       Task<T> GetById(int id);
+
+
     }
-    }
+}
 
         

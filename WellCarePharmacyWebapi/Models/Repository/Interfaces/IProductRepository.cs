@@ -2,9 +2,8 @@
 
 namespace WellCarePharmacyWebapi.Models.Repository.Interfaces
 {
-    public interface IProductRepository: IRepositoryBase<Products>
+    public interface IProductRepository : IRepositoryBase<Products>
     {
-
 
     }
 }

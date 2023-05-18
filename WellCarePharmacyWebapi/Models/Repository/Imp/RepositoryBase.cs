@@ -16,40 +16,38 @@ namespace WellCarePharmacyWebapi.Models.Repository.Imp
             _context = context;
             dbset= _context.Set<T>();
         }
-        public void Create(T entity)
+        public async Task<T> Create(T entity)
         {
-           dbset.Add(entity);
+            var entitydata= await _context.Set<T>().AddAsync(entity);
+           await  _context.SaveChangesAsync();
+            return  entitydata.Entity;
         }
 
-        public void Delete(int id)
+        public async Task<T> Delete(int id)
         {
-            var entity= dbset.Find(id);
+            var entity= await dbset.FindAsync(id);
             dbset.Remove(entity);
-                       
+            await _context.SaveChangesAsync();
+            return entity;
+
+        }
+
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            return await _context.Set<T>().ToListAsync(); 
+        }
+
+        public async Task<T> GetById(int id)
+        {
+            return await dbset.FindAsync(id);
+
+        }
+
+        public async Task Update(T entity)
+        {
             
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-           return _context.Set<T>().ToList(); 
-        }
-
-      
-
-        public void Update(T entity)
-        {
-            _context.Set<T>().Update(entity);
-        }
-
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
-
-        public T GetById(int id)
-        {
-            return dbset.Find(id);
-
+            dbset.Update(entity);
+           await _context.SaveChangesAsync();
         }
     }
 }
