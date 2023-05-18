@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WellCarePharmacyWebapi.Models.Context;
 using WellCarePharmacyWebapi.Models.Repository.Imp;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
@@ -26,6 +29,21 @@ namespace WellCarePharmacyWebapi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options => {
+                   options.RequireHttpsMetadata = false;
+                   options.SaveToken = true;
+                   options.TokenValidationParameters = new TokenValidationParameters()
+                   {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidateLifetime=true,
+                       ValidAudience = builder.Configuration["Jwt:Audience"],
+                       ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                           builder.Configuration["Jwt:Key"]))
+                   };
+               });
 
             var app = builder.Build();
 
@@ -35,7 +53,7 @@ namespace WellCarePharmacyWebapi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseAuthentication();
             app.UseCors("corspolicy");
             app.UseCors(bulider =>
             {

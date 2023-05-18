@@ -61,8 +61,6 @@ namespace WellCarePharmacyWebapi.Controllers
                 ProductId=orders.ProductId,
                 UsersId=orders.UsersId,
 
-               
-
             };
             await _repositoryWrapper.Orders.Create(order);
             orders.Id = order.Id;
