@@ -12,8 +12,8 @@ using WellCarePharmacyWebapi.Models.Context;
 namespace WellCarePharmacyWebapi.Migrations
 {
     [DbContext(typeof(WellCareDC))]
-    [Migration("20230517140625_addseeding")]
-    partial class addseeding
+    [Migration("20230521114525_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,16 +24,13 @@ namespace WellCarePharmacyWebapi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Orders", b =>
+            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -44,11 +41,14 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UsersId");
 
                     b.ToTable("Orders");
 
@@ -56,14 +56,22 @@ namespace WellCarePharmacyWebapi.Migrations
                         new
                         {
                             Id = 1,
-                            OrderId = 1,
                             ProductId = 3,
                             Quantity = 3,
-                            TotalPrice = 345m
+                            TotalPrice = 345m,
+                            UsersId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ProductId = 6,
+                            Quantity = 5,
+                            TotalPrice = 500m,
+                            UsersId = 2
                         });
                 });
 
-            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Products", b =>
+            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,8 +90,8 @@ namespace WellCarePharmacyWebapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -106,7 +114,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0f,
+                            Price = 0m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -116,7 +124,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0f,
+                            Price = 0m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         },
@@ -126,7 +134,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0f,
+                            Price = 0m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -136,7 +144,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0f,
+                            Price = 0m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         },
@@ -146,7 +154,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0f,
+                            Price = 0m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -156,7 +164,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0f,
+                            Price = 0m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         });
@@ -192,7 +200,7 @@ namespace WellCarePharmacyWebapi.Migrations
                         });
                 });
 
-            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Users", b =>
+            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -202,8 +210,7 @@ namespace WellCarePharmacyWebapi.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -212,12 +219,10 @@ namespace WellCarePharmacyWebapi.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RegisteredOn")
                         .HasColumnType("datetime2");
@@ -237,34 +242,44 @@ namespace WellCarePharmacyWebapi.Migrations
                             Id = 1,
                             Email = "siva@gmail.com",
                             Name = "siva",
-                            Password = "12345",
-                            PhoneNumber = 99,
+                            Password = "12345678",
+                            PhoneNumber = "9700469909",
                             RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = 1
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 2,
-                            Email = "siva@gmail.com",
-                            Name = "siva",
-                            Password = "12345",
-                            PhoneNumber = 99,
+                            Email = "priya@gmail.com",
+                            Name = "priya",
+                            Password = "12345678",
+                            PhoneNumber = "9709876678",
                             RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "admin",
+                            Name = "admin",
+                            Password = "admin",
+                            PhoneNumber = "9999999999",
+                            RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 1
                         });
                 });
 
-            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Orders", b =>
+            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Order", b =>
                 {
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Users", "Users")
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Product", "Products")
                         .WithMany()
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Products", "Products")
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.User", "Users")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -273,20 +288,15 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Users", b =>
+            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.User", b =>
                 {
                     b.HasOne("WellCarePharmacyWebapi.Models.Entities.Role", "Roles")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Role", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
