@@ -8,21 +8,23 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [EmailAddress(ErrorMessage = "Enter emailaddress")]
         public string Email { get; set; }
 
         [Required]
-        [MaxLength(15)]
-        public int PhoneNumber { get; set; }
-
-        [Required]
-        [MaxLength(30)]
+        [DataType(DataType.Password)]
+        [MinLength(8, ErrorMessage = "The Password must be at least 8 characters long.")]
         public string Password { get; set; }
+
+        
+        [Phone (ErrorMessage ="Enter valid phone number.")]
+        public string PhoneNumber { get; set; }
 
 
     }

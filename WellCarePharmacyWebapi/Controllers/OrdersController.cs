@@ -5,6 +5,7 @@ using WellCarePharmacyWebapi.Models.Entities;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WellCarePharmacyWebapi.Controllers
 {
@@ -19,14 +20,107 @@ namespace WellCarePharmacyWebapi.Controllers
             _repositoryWrapper = repositoryWrapper;
         }
 
-        [HttpGet]
+
+        [HttpGet("GetAllOrders")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrdersRespond>>> GetAllOrders()
         {
-            return Ok(await _repositoryWrapper.Orders.GetAll());
+            try
+            {
+                return Ok(await _repositoryWrapper.Orders.GetAll());
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "2")]
+        [HttpGet("id", Name = "GetOrder")]
+        public async Task<IActionResult> GetOrder(int id)
+        {
+            try
+            {
+                var value = await _repositoryWrapper.Orders.GetById(id);
+                if (value == null)
+                {
+                    return NotFound();
+                }
+                return Ok(value);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
+
+        }
+        [HttpPost("AddOrder")]
+        [Authorize(Roles = "2")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<OrdersRespond>> PostOrder([FromBody] OrdersRespond orders)
+        {
+
+            try
+            {
+                if (orders == null)
+                {
+                    return BadRequest(orders);
+                }
+
+                Order order = new Order
+                {
+                    Quantity = orders.Quantity,
+                    TotalPrice = orders.TotalPrice,
+                    ProductId = orders.ProductId,
+                    UsersId = orders.UsersId,
+
+                };
+                await _repositoryWrapper.Orders.Create(order);
+                orders.Id = order.Id;
+                _repositoryWrapper.Save();
+                return CreatedAtRoute("GetOrder", new { id = order.Id }, order);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
+        }
+
+
+        [Authorize(Roles = "2")]
+        [HttpPut("id")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateOrders(int id, [FromBody] OrdersRespond orders)
+        {
+            try
+            {
+                var orderid = await _repositoryWrapper.Orders.GetById(orders.Id);
+                if (orders == null)
+                {
+                    return NotFound();
+                }
+                orderid.Quantity = orders.Quantity;
+                orderid.TotalPrice = orders.TotalPrice;
+                orderid.ProductId = orders.ProductId;
+                orderid.UsersId = orders.UsersId;
+                return Ok(orderid);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
+
+
+        }
         [HttpDelete("id")]
+        [Authorize(Roles = "2")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrder(int id)
@@ -43,64 +137,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
         }
 
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<OrdersRespond>> PostOrder([FromBody] OrdersRespond orders)
-        {
-            if (orders == null)
-            {
-                return BadRequest(orders);
-            }
 
-
-            Orders order = new Orders
-            {
-                Quantity = orders.Quantity,
-                TotalPrice = orders.TotalPrice,
-                ProductId=orders.ProductId,
-                UsersId=orders.UsersId,
-
-            };
-            await _repositoryWrapper.Orders.Create(order);
-            orders.Id = order.Id;
-            _repositoryWrapper.Save();
-            return CreatedAtRoute("GetOrder", new { id = order.Id }, order);
-
-
-        }
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("id", Name = "GetOrder")]
-        public async Task<IActionResult> GetOrder(int id)
-        {
-            var value = await _repositoryWrapper.Orders.GetById(id);
-            if (value == null)
-            {
-                return NotFound();
-            }
-            return Ok(value);
-        }
-
-        [HttpPut("id")]
-        public async Task<IActionResult> UpdateOrders(int id, [FromBody] OrdersRespond orders)
-        {
-            var orderid = await _repositoryWrapper.Orders.GetById(orders.Id);
-            if (orders == null)
-            {
-                return NotFound();
-            }
-
-            orderid.Quantity = orders.Quantity;
-            orderid.TotalPrice = orders.TotalPrice;
-            orderid.ProductId = orders.ProductId;
-            orderid.UsersId = orders.UsersId;
-           
-        
-            return Ok(orderid);
-
-        }
 
     }
 }

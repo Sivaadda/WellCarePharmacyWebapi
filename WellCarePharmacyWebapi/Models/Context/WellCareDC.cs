@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WellCarePharmacyWebapi.Models.Entities;
-using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
+
 
 namespace WellCarePharmacyWebapi.Models.Context
 {
@@ -8,13 +8,13 @@ namespace WellCarePharmacyWebapi.Models.Context
     {
         public WellCareDC(DbContextOptions<WellCareDC> options) : base(options) { }
 
-        public DbSet<Products> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
 
-        public DbSet<Orders> Orders { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public DbSet<Role> Roles { get; set; }
 
-        public DbSet<Users> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,23 +23,25 @@ namespace WellCarePharmacyWebapi.Models.Context
 
             modelBuilder.Entity<Role>().HasData(role1, role2);
 
-            var product1 = new Products { Id = 7, ProductName = "Active Charcoal Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "Available", ImageUrl = "iwyer" };
-            var product2 = new Products { Id = 8, ProductName = "Active Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "NotAvailable", ImageUrl = "iwyer" };
+            var product1 = new Product { Id = 7, ProductName = "Active Charcoal Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "Available", ImageUrl = "iwyer" };
+            var product2 = new Product { Id = 8, ProductName = "Active Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "NotAvailable", ImageUrl = "iwyer" };
 
-            var product3 = new Products { Id = 3, ProductName = "Active Charcoal Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "Available", ImageUrl = "iwyer" };
-            var product4 = new Products { Id = 4, ProductName = "Active Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "NotAvailable", ImageUrl = "iwyer" };
+            var product3 = new Product { Id = 3, ProductName = "Active Charcoal Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "Available", ImageUrl = "iwyer" };
+            var product4 = new Product { Id = 4, ProductName = "Active Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "NotAvailable", ImageUrl = "iwyer" };
 
 
-            var product5 = new Products { Id = 5, ProductName = "Active Charcoal Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "Available", ImageUrl = "iwyer" };
-            var product6 = new Products { Id = 6, ProductName = "Active Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "NotAvailable", ImageUrl = "iwyer" };
-            modelBuilder.Entity<Products>().HasData(product1, product2, product3, product4, product5, product6);
+            var product5 = new Product { Id = 5, ProductName = "Active Charcoal Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "Available", ImageUrl = "iwyer" };
+            var product6 = new Product { Id = 6, ProductName = "Active Soap", Descripition = "soap made with charcoal", Discount = 45, Status = "NotAvailable", ImageUrl = "iwyer" };
+            modelBuilder.Entity<Product>().HasData(product1, product2, product3, product4, product5, product6);
 
-            var user1 = new Users { Id = 1, Name = "siva", Email = "siva@gmail.com", Password = "12345", PhoneNumber = 99, RoleId=1};
-            var user2 = new Users { Id = 2, Name = "siva", Email = "siva@gmail.com", Password = "12345", PhoneNumber = 99, RoleId=2 };
-            modelBuilder.Entity<Users>().HasData(user1, user2);
+            var user1 = new User { Id = 1, Name = "siva", Email = "siva@gmail.com", Password = "12345678", PhoneNumber = "9700469909", RoleId=2};
+            var user2 = new User { Id = 2, Name = "priya", Email = "priya@gmail.com", Password = "12345678", PhoneNumber = "9709876678", RoleId=2 };
+            var user3 = new User { Id=3, Name ="admin", Email ="admin", Password="admin", PhoneNumber ="9999999999", RoleId=1 };
+            modelBuilder.Entity<User>().HasData(user1, user2, user3);
 
-            var order1 = new Orders { Id = 1, Quantity = 3, TotalPrice = 345 , ProductId=3,UsersId=1};
-            modelBuilder.Entity<Orders>().HasData(order1);
+            var order1 = new Order { Id = 1, Quantity = 3, TotalPrice = 345 , ProductId=3,UsersId=1};
+            var order2 = new Order { Id = 2, Quantity = 5, TotalPrice = 500, ProductId = 6, UsersId = 2 };
+            modelBuilder.Entity<Order>().HasData(order1, order2);
 
             base.OnModelCreating(modelBuilder);
         }

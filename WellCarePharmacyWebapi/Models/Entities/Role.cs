@@ -9,6 +9,6 @@ namespace WellCarePharmacyWebapi.Models.Entities
         [MaxLength(20)]
         public string RoleName { get; set; }
 
-        public ICollection<Users> Users { get; set;}
+    
     }
 }

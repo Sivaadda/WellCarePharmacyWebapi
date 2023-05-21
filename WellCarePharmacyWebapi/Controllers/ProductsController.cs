@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
 using WellCarePharmacyWebapi.Models.Context;
 using WellCarePharmacyWebapi.Models.Entities;
@@ -19,86 +21,94 @@ namespace WellCarePharmacyWebapi.Controllers
             _repositoryWrapper = repositoryWrapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllProducts")]
+        [Authorize(Roles = "2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ProductRequest>>> GetAllProducts()
         {
-            return Ok(await _repositoryWrapper.Products.GetAll());
+            try
+            {
+                return Ok(await _repositoryWrapper.Products.GetAll());
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
         }
 
-
-
-        [HttpDelete("id")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "2")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteProduct(int id)
+        [HttpGet("id", Name = "GetProduct")]
+        public async Task<IActionResult> GetProduct(int id)
         {
-            var product=  await _repositoryWrapper.Products.GetById(id);
-            if(product == null)
+            try
             {
-                return NotFound();
+                var value = await _repositoryWrapper.Products.GetById(id);
+                if (value == null)
+                {
+                    return NotFound();
+                }
+                return Ok(value);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
             }
 
-            await _repositoryWrapper.Products.Delete(id);
-            _repositoryWrapper.Save();
-            return NoContent();
-
         }
 
-        [HttpPost]
+        [HttpPost("AddProduct")]
+        [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductRequest>> PostProduct([FromBody] ProductRequest product)
         {
-            if (product == null)
+            try
             {
-                return BadRequest(product);
+                if (product == null)
+                {
+                    return BadRequest(product);
+                }
+
+                Product products = new Product
+                {
+
+                    ProductName = product.ProductName,
+                    Price = product.Price,
+                    Discount = product.Discount,
+                    Descripition = product.Descripition,
+                    Status = product.Status,
+                    ImageUrl = product.ImageUrl,
+
+
+                };
+                await _repositoryWrapper.Products.Create(products);
+                product.Id = products.Id;
+                _repositoryWrapper.Save();
+                return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
             }
-          
-            Products products = new Products
+            catch (Exception)
             {
-               
-                ProductName = product.ProductName,
-                Price = product.Price,
-                Discount = product.Discount,
-                Descripition = product.Descripition,
-                Status = product.Status,
-                ImageUrl = product.ImageUrl,
-
-
-            };
-            await _repositoryWrapper.Products.Create(products);
-            product.Id = products.Id;
-            _repositoryWrapper.Save();
-            return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
-
-           
-        }
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("id" , Name ="GetProduct")]
-        public async Task<IActionResult> GetProduct(int id)
-        {
-            var value = await _repositoryWrapper.Products.GetById(id);
-            if(value==null)
-            {
-                return NotFound();
+                return StatusCode(500, "An error occurred while processing the login request.");
             }
-            return Ok(value);
+
         }
 
         [HttpPut("id")]
-        public async Task<IActionResult> UpdateProduct(int id,[FromBody]ProductRequest product)
+        [Authorize(Roles = "1")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductRequest product)
         {
-           
-          
+            try
+            {
                 var productsid = await _repositoryWrapper.Products.GetById(product.Id);
-               if (product == null)
-                 {
-                return NotFound();
-                 }
-            productsid.ProductName = product.ProductName;
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                productsid.ProductName = product.ProductName;
                 productsid.Price = product.Price;
                 productsid.Discount = product.Discount;
                 productsid.Descripition = product.Descripition;
@@ -107,14 +117,43 @@ namespace WellCarePharmacyWebapi.Controllers
                 await _repositoryWrapper.Products.Update(productsid);
 
                 return Ok(productsid);
-                
-
-
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
 
 
         }
 
+        [HttpDelete("id")]
+        [Authorize(Roles = "1")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
 
+            try
+            {
+                var product = await _repositoryWrapper.Products.GetById(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                await _repositoryWrapper.Products.Delete(id);
+                _repositoryWrapper.Save();
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
+
+
+        }
+
+       
     }
 }
 

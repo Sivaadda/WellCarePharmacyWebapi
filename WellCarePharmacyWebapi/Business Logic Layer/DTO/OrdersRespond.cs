@@ -7,21 +7,19 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         public int Quantity { get; set; }
 
         [Required]
         public decimal TotalPrice { get; set; }
 
-        [ForeignKey("Users")]
+        [ForeignKey("User")]
         public int UsersId { get; set; }
 
 
-
-        [ForeignKey("Products")]
+        [ForeignKey("Product")]
         public int ProductId { get; set; }
-    
-     
 
     }
 }

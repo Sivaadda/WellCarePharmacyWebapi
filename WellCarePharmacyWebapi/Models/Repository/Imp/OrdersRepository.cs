@@ -4,7 +4,7 @@ using WellCarePharmacyWebapi.Models.Repository.Interfaces;
 
 namespace WellCarePharmacyWebapi.Models.Repository.Imp
 {
-    public class OrdersRepository: RepositoryBase<Orders>, IOrdersRepository
+    public class OrdersRepository: RepositoryBase<Order>, IOrdersRepository
     {
         public OrdersRepository(WellCareDC context) : base(context)
         {

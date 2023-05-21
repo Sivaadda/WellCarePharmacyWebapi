@@ -1,19 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Org.BouncyCastle.Crypto.Generators;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
 using WellCarePharmacyWebapi.Models.Context;
 using WellCarePharmacyWebapi.Models.Entities;
-using WellCarePharmacyWebapi.Models.Repository.Interfaces;
+
+
 
 namespace WellCarePharmacyWebapi.Controllers
 {
@@ -29,67 +25,120 @@ namespace WellCarePharmacyWebapi.Controllers
             _repositoryWrapper = repositoryWrapper;
             _configuration = configuration;
         }
-        public static Users user = new Users();
 
         [AllowAnonymous]
+        [HttpPost("Login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            try
+            {
+                if (loginRequest != null && loginRequest.Email != null && loginRequest.Password != null)
+                {
+
+                    var user = await _repositoryWrapper.Users.FirstOrDefaultAsync(o => o.Email == loginRequest.Email && o.Password == loginRequest.Password);
+
+                    if (user != null)
+                    {
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                        var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                        var claims = new[]
+                        {
+                           new Claim(ClaimTypes.NameIdentifier, user.Name),
+                           new Claim(ClaimTypes.Email, user.Email),
+                           new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+                           new Claim(ClaimTypes.Role, user.RoleId.ToString()),
+                        };
+
+                        var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+                            _configuration["Jwt:Audience"],
+                            claims,
+                            expires: DateTime.Now.AddMinutes(15),
+                            signingCredentials: signIn);
+
+                        return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    }
+                    return BadRequest("Invalid credentials");
+                }
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
+        }
+
+        [HttpPost("Registration")]
+        public async Task<IActionResult> Registration([FromBody] RegistrationRequest registration)
+        {
+            try
+            {
+                if (registration == null)
+                {
+                    return BadRequest(registration);
+                }
+                User users = new User()
+                {
+                    Name = registration.Name,
+                    Email = registration.Email,
+                    PhoneNumber = registration.PhoneNumber,
+                    Password = registration.Password,
+                    RoleId = 2,
+
+
+                };
+                await _repositoryWrapper.Users.AddAsync(users);
+                registration.Id = users.Id;
+                await _repositoryWrapper.SaveChangesAsync();
+                return CreatedAtRoute(nameof(GetAllUsers), new { id = users.Id }, users);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing the login request.");
+            }
+           
+        }
+
+        [Authorize(Roles = "1")]
         [HttpGet(Name = "GetAllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<RegistrationRequest>>> GetAllUsers()
         {
-            return Ok(await _repositoryWrapper.Users.ToListAsync());
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
-        {
-           
-
-            if (loginRequest != null && loginRequest.Email != null && loginRequest.Password != null)
+            try
             {
-                var user = await _repositoryWrapper.Users.FirstOrDefaultAsync(o => o.Email == loginRequest.Email && o.Password == loginRequest.Password);
-                
-                if (user != null)
-                {
-                    var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                    var signIn = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256);
-                    var claims = new[]
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, user.Name),
-                        new Claim(ClaimTypes.Email, user.Email),
-                       
-                };
 
-                    var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
-                        _configuration["Jwt:Audience"],
-                        claims,
-                        expires: DateTime.Now.AddMinutes(15),
-                        signingCredentials: signIn);
-                    
-                   
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
-                }
-                return BadRequest("Invalid credentials");
+                return Ok(await _repositoryWrapper.Users.ToListAsync());
             }
-            return NotFound();
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving users.");
+            }
         }
 
-      
         [HttpDelete("id")]
+        [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _repositoryWrapper.Users.FindAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await _repositoryWrapper.Users.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                _repositoryWrapper.Users.Remove(user);
+                await _repositoryWrapper.SaveChangesAsync();
+                return NoContent();
             }
-
-            _repositoryWrapper.Users.Remove(user);
-            await _repositoryWrapper.SaveChangesAsync();
-            return NoContent();
-
+            catch(Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving users.");
+            }
         }
     }
 }

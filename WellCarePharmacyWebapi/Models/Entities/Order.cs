@@ -4,7 +4,7 @@ using WellCarePharmacyWebapi.Models.Entities.Base;
 
 namespace WellCarePharmacyWebapi.Models.Entities
 {
-    public class Orders:BaseEntity
+    public class Order:BaseEntity
     {
        
         [Required]
@@ -15,12 +15,12 @@ namespace WellCarePharmacyWebapi.Models.Entities
 
         public int UsersId { get; set; }
         [ForeignKey("UsersId")]
-        public virtual Users Users { get; set; }
+        public virtual User Users { get; set; }
 
 
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
-        public virtual Products Products { get; set; }
+        public virtual Product Products { get; set; }
 
     }
 }

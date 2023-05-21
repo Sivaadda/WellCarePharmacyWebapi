@@ -3,14 +3,14 @@ using WellCarePharmacyWebapi.Models.Entities.Base;
 
 namespace WellCarePharmacyWebapi.Models.Entities
 {
-    public class Products:BaseEntity
+    public class Product:BaseEntity
     {
         [Required]
         [MaxLength(50)]
         public string ProductName { get; set; }
 
         [Required]
-        public float Price { get; set; }
+        public decimal Price { get; set; }
 
         [MaxLength(100)]
         public string Descripition { get; set; }
@@ -24,7 +24,6 @@ namespace WellCarePharmacyWebapi.Models.Entities
         [Required]
         public string ImageUrl { get; set; }
 
-        
 
 
     }

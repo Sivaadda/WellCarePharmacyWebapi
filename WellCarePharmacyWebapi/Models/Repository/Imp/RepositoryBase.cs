@@ -19,7 +19,7 @@ namespace WellCarePharmacyWebapi.Models.Repository.Imp
         public async Task<T> Create(T entity)
         {
             var entitydata= await _context.Set<T>().AddAsync(entity);
-           await  _context.SaveChangesAsync();
+            await  _context.SaveChangesAsync();
             return  entitydata.Entity;
         }
 

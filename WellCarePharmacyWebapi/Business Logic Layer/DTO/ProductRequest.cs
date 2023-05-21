@@ -12,13 +12,11 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
         public string ProductName { get; set; }
 
         [Required]
-        
-        public float Price { get; set; }
+        public decimal Price { get; set; }
 
         [MaxLength(100)]
         public string Descripition { get; set; }
 
-        
         public decimal Discount { get; set; }
 
         [Required]
