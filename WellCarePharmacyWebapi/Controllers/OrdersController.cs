@@ -6,6 +6,7 @@ using WellCarePharmacyWebapi.Models.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace WellCarePharmacyWebapi.Controllers
 {
