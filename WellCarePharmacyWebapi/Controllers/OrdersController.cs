@@ -92,7 +92,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
         }
 
-
+        
         [Authorize(Roles = "2")]
         [HttpPut("id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -101,16 +101,18 @@ namespace WellCarePharmacyWebapi.Controllers
         {
             try
             {
-                var orderid = await _repositoryWrapper.Orders.GetById(orders.Id);
-                if (orders == null)
+                var orderid = await _repositoryWrapper.Orders.GetById(id);
+                if (orderid != null)
                 {
-                    return NotFound();
+                    orderid.Quantity = orders.Quantity;
+                    orderid.TotalPrice = orders.TotalPrice;
+                    orderid.ProductId = orders.ProductId;
+                    orderid.UsersId = orders.UsersId;
+                    await _repositoryWrapper.Orders.Update(orderid);
+                    _repositoryWrapper.Save();
+                    return Ok(orderid);
                 }
-                orderid.Quantity = orders.Quantity;
-                orderid.TotalPrice = orders.TotalPrice;
-                orderid.ProductId = orders.ProductId;
-                orderid.UsersId = orders.UsersId;
-                return Ok(orderid);
+                return NotFound();
             }
             catch (Exception)
             {

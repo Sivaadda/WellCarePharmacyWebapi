@@ -12,8 +12,8 @@ using WellCarePharmacyWebapi.Models.Context;
 namespace WellCarePharmacyWebapi.Migrations
 {
     [DbContext(typeof(WellCareDC))]
-    [Migration("20230521114525_initial")]
-    partial class initial
+    [Migration("20230522045919_addingseedingdata")]
+    partial class addingseedingdata
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,7 +114,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0m,
+                            Price = 455m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -124,7 +124,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0m,
+                            Price = 455m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         },
@@ -134,7 +134,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0m,
+                            Price = 455m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -144,7 +144,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0m,
+                            Price = 455m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         },
@@ -154,7 +154,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0m,
+                            Price = 455m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -164,7 +164,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 0m,
+                            Price = 455m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         });
@@ -260,9 +260,9 @@ namespace WellCarePharmacyWebapi.Migrations
                         new
                         {
                             Id = 3,
-                            Email = "admin",
+                            Email = "admin@gmail.com",
                             Name = "admin",
-                            Password = "admin",
+                            Password = "admin123",
                             PhoneNumber = "9999999999",
                             RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WellCarePharmacyWebapi.Models.Context;
 
@@ -11,9 +12,10 @@ using WellCarePharmacyWebapi.Models.Context;
 namespace WellCarePharmacyWebapi.Migrations
 {
     [DbContext(typeof(WellCareDC))]
-    partial class WellCareDCModelSnapshot : ModelSnapshot
+    [Migration("20230522041745_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,7 +114,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 455m,
+                            Price = 0m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -122,7 +124,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 455m,
+                            Price = 0m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         },
@@ -132,7 +134,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 455m,
+                            Price = 0m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -142,7 +144,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 455m,
+                            Price = 0m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         },
@@ -152,7 +154,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 455m,
+                            Price = 0m,
                             ProductName = "Active Charcoal Soap",
                             Status = "Available"
                         },
@@ -162,7 +164,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             Descripition = "soap made with charcoal",
                             Discount = 45m,
                             ImageUrl = "iwyer",
-                            Price = 455m,
+                            Price = 0m,
                             ProductName = "Active Soap",
                             Status = "NotAvailable"
                         });
@@ -258,9 +260,9 @@ namespace WellCarePharmacyWebapi.Migrations
                         new
                         {
                             Id = 3,
-                            Email = "admin@gmail.com",
+                            Email = "admin",
                             Name = "admin",
-                            Password = "admin123",
+                            Password = "admin",
                             PhoneNumber = "9999999999",
                             RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RoleId = 1
