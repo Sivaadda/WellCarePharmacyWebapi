@@ -4,9 +4,7 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
 {
     public class ProductRequest
     {
-        [Key]
-        public int Id { get; set; }
-
+        
         [Required]
         [MaxLength(50)]
         public string ProductName { get; set; }

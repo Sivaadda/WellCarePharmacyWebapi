@@ -91,7 +91,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 };
                 await _repositoryWrapper.Users.AddAsync(users);
-                registration.Id = users.Id;
+                //registration.Id = users.Id;
                 await _repositoryWrapper.SaveChangesAsync();
                 return CreatedAtRoute(nameof(GetAllUsers), new { id = users.Id }, users);
             }

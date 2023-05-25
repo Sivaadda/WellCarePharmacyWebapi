@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
 using WellCarePharmacyWebapi.Models.Entities;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Authorization;
-using System.Text;
 
 namespace WellCarePharmacyWebapi.Controllers
 {
@@ -83,7 +79,6 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 };
                 await _repositoryWrapper.Orders.Create(order);
-                orders.Id = order.Id;
                 _repositoryWrapper.Save();
                 return CreatedAtRoute("GetOrder", new { id = order.Id }, order);
             }

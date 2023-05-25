@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using WellCarePharmacyWebapi.Models.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
 
 namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
 {
     public class RegistrationRequest
     {
-        [Key]
-        public int Id { get; set; }
-
+        
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }

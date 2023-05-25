@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
-using WellCarePharmacyWebapi.Models.Context;
 using WellCarePharmacyWebapi.Models.Entities;
-using WellCarePharmacyWebapi.Models.Repository.Imp;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
 
 namespace WellCarePharmacyWebapi.Controllers
@@ -84,9 +80,8 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 };
                 await _repositoryWrapper.Products.Create(products);
-                product.Id = products.Id;
                 _repositoryWrapper.Save();
-                return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
+                return CreatedAtRoute("GetProduct", new { id = products.Id}, products);
             }
             catch (Exception)
             {
