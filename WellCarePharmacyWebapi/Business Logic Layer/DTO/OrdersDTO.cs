@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
 {
-    public class OrdersRespond
+    public class OrdersDTO
     {
         
 

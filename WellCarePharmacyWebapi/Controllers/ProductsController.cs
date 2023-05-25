@@ -20,7 +20,7 @@ namespace WellCarePharmacyWebapi.Controllers
         [HttpGet("GetAllProducts")]
         [Authorize(Roles = "2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<ProductRequest>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
             try
             {
@@ -58,7 +58,7 @@ namespace WellCarePharmacyWebapi.Controllers
         [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductRequest>> PostProduct([FromBody] ProductRequest product)
+        public async Task<ActionResult<ProductDTO>> PostProduct([FromBody] ProductDTO product)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace WellCarePharmacyWebapi.Controllers
         [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductRequest product)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDTO product)
         {
             try
             {

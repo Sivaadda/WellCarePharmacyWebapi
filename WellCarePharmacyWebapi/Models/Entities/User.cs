@@ -23,7 +23,7 @@ namespace WellCarePharmacyWebapi.Models.Entities
         [Phone(ErrorMessage = "Enter valid phone number.")]
         public string  PhoneNumber { get; set; }
 
-        public DateTime RegisteredOn { get; set; }
+        public DateTime RegisteredOn { get; set; } = DateTime.Now;
 
 
         public int RoleId { get; set; }
