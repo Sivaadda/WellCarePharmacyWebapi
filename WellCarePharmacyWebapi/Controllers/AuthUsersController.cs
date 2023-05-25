@@ -38,7 +38,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 if (loginRequest != null && loginRequest.Email != null && loginRequest.Password != null)
                 {
 
-                    var user = await _repositoryWrapper.Users.FirstOrDefaultAsync(o => o.Email == loginRequest.Email && o.Password == EncryptPassword(loginRequest.Password));
+                    var user = await _repositoryWrapper.Users.Include(u => u.Roles).FirstOrDefaultAsync(o => o.Email == loginRequest.Email && o.Password == EncryptPassword(loginRequest.Password));
 
                     if (user != null)
                     {
@@ -75,7 +75,8 @@ namespace WellCarePharmacyWebapi.Controllers
         {
             try
             {
-                
+                var role = await _repositoryWrapper.Roles.FindAsync(2);
+
                 if (registration == null)
                 {
                     return BadRequest(registration);
@@ -87,6 +88,8 @@ namespace WellCarePharmacyWebapi.Controllers
                     PhoneNumber = registration.PhoneNumber,
                     Password = EncryptPassword(registration.Password),
                     RoleId = 2,
+                    Roles = role
+                    
 
 
                 };
@@ -110,7 +113,7 @@ namespace WellCarePharmacyWebapi.Controllers
             try
             {
 
-                return Ok(await _repositoryWrapper.Users.ToListAsync());
+                return Ok(await _repositoryWrapper.Users.Include(u => u.Roles).ToListAsync());
             }
             catch (Exception)
             {
