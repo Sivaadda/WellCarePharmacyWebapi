@@ -28,7 +28,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while processing the login request.");
+                return StatusCode(500, "An error occurred while feching all products.");
             }
         }
 
@@ -49,7 +49,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while processing the login request.");
+                return StatusCode(500, "An error occurred while feching product by id.");
             }
 
         }
@@ -85,7 +85,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while processing the login request.");
+                return StatusCode(500, "An error occurred while creating a products.");
             }
 
         }
@@ -119,7 +119,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while processing the login request.");
+                return StatusCode(500, "An error occurred while updating a product.");
             }
 
 
@@ -146,13 +146,12 @@ namespace WellCarePharmacyWebapi.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while processing the login request.");
+                return StatusCode(500, "An error occurred while delecting a product.");
             }
 
 
         }
 
-       
     }
 }
 

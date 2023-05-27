@@ -25,37 +25,16 @@ namespace WellCarePharmacyWebapi.Controllers
         {
             try
             {
-                return Ok(await _repositoryWrapper.Orders.GetAll());
+                return Ok(await _repositoryWrapper.Orders.GetAllorders()) ;
 
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while processing the login request.");
+                return StatusCode(500, "An error occurred while getting all orders.");
             }
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "2")]
-        [HttpGet("id", Name = "GetOrder")]
-        public async Task<IActionResult> GetOrder(int id)
-        {
-            try
-            {
-                var value = await _repositoryWrapper.Orders.GetById(id);
-                if (value == null)
-                {
-                    return NotFound();
-                }
-                return Ok(value);
 
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while processing the login request.");
-            }
-
-        }
         [HttpPost("AddOrder")]
         [Authorize(Roles = "2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -76,66 +55,44 @@ namespace WellCarePharmacyWebapi.Controllers
                     TotalPrice = orders.TotalPrice,
                     ProductId = orders.ProductId,
                     UsersId = orders.UsersId,
+                   
 
                 };
                 await _repositoryWrapper.Orders.Create(order);
                 _repositoryWrapper.Save();
-                return CreatedAtRoute("GetOrder", new { id = order.Id }, order);
+                return Ok(orders);
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while processing the login request.");
+                return StatusCode(500, "An error occurred while adding a order.");
             }
         }
 
-        
-        [Authorize(Roles = "2")]
-        [HttpPut("id")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateOrders(int id, [FromBody] OrdersDTO orders)
-        {
-            try
-            {
-                var orderid = await _repositoryWrapper.Orders.GetById(id);
-                if (orderid != null)
-                {
-                    orderid.Quantity = orders.Quantity;
-                    orderid.TotalPrice = orders.TotalPrice;
-                    orderid.ProductId = orders.ProductId;
-                    orderid.UsersId = orders.UsersId;
-                    await _repositoryWrapper.Orders.Update(orderid);
-                    _repositoryWrapper.Save();
-                    return Ok(orderid);
-                }
-                return NotFound();
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while processing the login request.");
-            }
 
-
-        }
         [HttpDelete("id")]
         [Authorize(Roles = "2")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteOrder(int id)
         {
-            var order= await _repositoryWrapper.Orders.GetById(id);
-            if (order == null)
+            try
             {
-                return NotFound();
+                var order = await _repositoryWrapper.Orders.GetById(id);
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                await _repositoryWrapper.Orders.Delete(id);
+                _repositoryWrapper.Save();
+                return Ok("Order is sucessfully delected");
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while delecting Order.");
             }
 
-            await _repositoryWrapper.Orders.Delete(id);
-            _repositoryWrapper.Save();
-            return NoContent();
-
         }
-
-
 
     }
 }
