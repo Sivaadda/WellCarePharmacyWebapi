@@ -6,6 +6,7 @@
         {
           
             builder.Services.AddSwaggerGen();
+
         }
     }
 }

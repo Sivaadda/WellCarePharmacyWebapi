@@ -22,6 +22,7 @@ namespace WellCarePharmacyWebapi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
+
             try
             {
                 return Ok(await _repositoryWrapper.Products.GetAll());

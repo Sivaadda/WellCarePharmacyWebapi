@@ -19,7 +19,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
 
         [HttpGet("GetAllOrders")]
-        [AllowAnonymous]
+       [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrdersDTO>>> GetAllOrders()
         {
