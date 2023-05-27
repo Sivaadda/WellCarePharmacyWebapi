@@ -35,13 +35,6 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
 
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while processing the login request.");
-            }
-
-        }
         [HttpPost("AddOrder")]
         [Authorize(Roles = "2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,7 +64,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while processing the login request.");
+                return StatusCode(500, "An error occurred while adding a order.");
             }
         }
 
@@ -87,21 +80,9 @@ namespace WellCarePharmacyWebapi.Controllers
                 var order = await _repositoryWrapper.Orders.GetById(id);
                 if (order == null)
                 {
-                    orderid.Quantity = orders.Quantity;
-                    orderid.TotalPrice = orders.TotalPrice;
-                    orderid.ProductId = orders.ProductId;
-                    orderid.UsersId = orders.UsersId;
-                    await _repositoryWrapper.Orders.Update(orderid);
-                    _repositoryWrapper.Save();
-                    return Ok(orderid);
+                    return NotFound();
                 }
-                return NotFound();
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while processing the login request.");
-            }
-
+           
                 await _repositoryWrapper.Orders.Delete(id);
                 _repositoryWrapper.Save();
                 return Ok("Order is sucessfully delected");
