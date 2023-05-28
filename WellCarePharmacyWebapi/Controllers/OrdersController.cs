@@ -91,7 +91,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 };
 
-                return CreatedAtRoute(nameof(GetAllOrders), new { id = response.Id }, response);
+                return Ok(response);
             }
             catch (Exception)
             {
