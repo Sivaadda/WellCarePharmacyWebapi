@@ -18,8 +18,9 @@ namespace WellCarePharmacyWebapi.Controllers
         }
        
         [HttpGet("GetAllProducts")]
-        [Authorize(Roles = "2")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
 
@@ -33,9 +34,10 @@ namespace WellCarePharmacyWebapi.Controllers
             }
         }
 
-        [Authorize(Roles = "2")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        
         [HttpGet("id", Name = "GetProduct")]
         public async Task<IActionResult> GetProduct(int id)
         {
@@ -59,6 +61,8 @@ namespace WellCarePharmacyWebapi.Controllers
         [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<ProductDTO>> PostProduct([FromBody] ProductDTO product)
         {
             try
@@ -95,6 +99,8 @@ namespace WellCarePharmacyWebapi.Controllers
         [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDTO product)
         {
             try
@@ -130,6 +136,8 @@ namespace WellCarePharmacyWebapi.Controllers
         [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
 
@@ -143,7 +151,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 await _repositoryWrapper.Products.Delete(id);
                 _repositoryWrapper.Save();
-                return NoContent();
+                return Ok("Product is delected successfully");
             }
             catch (Exception)
             {

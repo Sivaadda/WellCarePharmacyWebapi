@@ -27,7 +27,7 @@ namespace WellCarePharmacyWebapi.Controllers
             _configuration = configuration;
         }
 
-        [AllowAnonymous]
+        
         [HttpPost("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -72,11 +72,12 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpPost("Registration")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Registration([FromBody] RegistrationRequest registration)
         {
             try
             {
-                var role = await _repositoryWrapper.Roles.FindAsync(2);
+                var role = await _repositoryWrapper.Roles.FindAsync(1);
 
                 if (registration == null)
                 {
@@ -88,14 +89,11 @@ namespace WellCarePharmacyWebapi.Controllers
                     Email = registration.Email,
                     PhoneNumber = registration.PhoneNumber,
                     Password = EncryptPassword(registration.Password),
-                    RoleId = 2,
+                    RoleId = 1,
                     Roles = role
-                    
-
 
                 };
                 await _repositoryWrapper.Users.AddAsync(users);
-                //registration.Id = users.Id;
                 await _repositoryWrapper.SaveChangesAsync();
                 return CreatedAtRoute(nameof(GetAllUsers), new { id = users.Id }, users);
             }
@@ -109,6 +107,8 @@ namespace WellCarePharmacyWebapi.Controllers
         [Authorize(Roles = "1")]
         [HttpGet(Name = "GetAllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<IEnumerable<RegistrationRequest>>> GetAllUsers()
         {
             try
@@ -125,6 +125,8 @@ namespace WellCarePharmacyWebapi.Controllers
         [HttpDelete("id")]
         [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -138,7 +140,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 _repositoryWrapper.Users.Remove(user);
                 await _repositoryWrapper.SaveChangesAsync();
-                return NoContent();
+                return Ok("User is delected sucessfully");
             }
             catch(Exception)
             {

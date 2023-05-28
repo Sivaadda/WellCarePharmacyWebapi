@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using WellCarePharmacyWebapi.Models.Entities;
+
 namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
 {
-    public class OrdersDTO
+    public class OrdersRequest
     {
-        
+       
 
         [Required]
         public int Quantity { get; set; }
@@ -13,11 +15,12 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
         public decimal TotalPrice { get; set; }
 
         [ForeignKey("User")]
-        public int UsersId { get; set; }
+         public int UsersId { get; set; }
 
 
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
+         [ForeignKey("Product")]
+         public int ProductId { get; set; }
+      
 
     }
 }
