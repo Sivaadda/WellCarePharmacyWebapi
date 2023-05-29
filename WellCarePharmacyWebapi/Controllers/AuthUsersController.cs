@@ -10,8 +10,6 @@ using WellCarePharmacyWebapi.Models.Context;
 using WellCarePharmacyWebapi.Models.Entities;
 
 
-
-
 namespace WellCarePharmacyWebapi.Controllers
 {
     [Route("api/[controller]")]
@@ -76,7 +74,7 @@ namespace WellCarePharmacyWebapi.Controllers
         {
             try
             {
-                var role = await _repositoryWrapper.Roles.FindAsync(1);
+                var role = await _repositoryWrapper.Roles.FindAsync(2);
 
                 if (registration == null)
                 {
@@ -88,7 +86,7 @@ namespace WellCarePharmacyWebapi.Controllers
                     Email = registration.Email,
                     PhoneNumber = registration.PhoneNumber,
                     Password = EncryptPassword(registration.Password),
-                    RoleId = 1,
+                    RoleId = 2,
                     Roles = role
 
                 };

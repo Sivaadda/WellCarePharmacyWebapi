@@ -19,5 +19,11 @@ namespace WellCarePharmacyWebapi.Models.Repository.Imp
         {
             return await _context.Set<User>().Include(o => o.Roles).ToListAsync();
         }
+
+        public async Task<User> GetuserById(int id)
+        {
+            return await _context.Set<User>().Include(o => o.Roles).FirstOrDefaultAsync(u => u.Id == id);
+
+        }
     }
 }

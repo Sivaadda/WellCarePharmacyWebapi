@@ -66,7 +66,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 }
 
                 // Retrieve the associated user based on the user ID
-                User user = await _repositoryWrapper.Users.GetById(orders.UsersId);
+                User user = await _repositoryWrapper.Users.GetuserById(orders.UsersId);
                 if (user == null)
                 {
                     return NotFound($"User with ID {orders.UsersId} not found.");
