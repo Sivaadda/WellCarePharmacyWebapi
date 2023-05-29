@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WellCarePharmacyWebapi.Models.Entities.Base;
+﻿
+using System.ComponentModel.DataAnnotations;
 
-namespace WellCarePharmacyWebapi.Models.Entities
+namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
 {
-    public class Product:BaseEntity
+    public class ProductRespond
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string ProductName { get; set; }
@@ -23,8 +26,5 @@ namespace WellCarePharmacyWebapi.Models.Entities
 
         [Required]
         public string ImageUrl { get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; }
-
     }
 }

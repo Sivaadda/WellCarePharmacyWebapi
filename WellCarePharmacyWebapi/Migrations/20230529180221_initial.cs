@@ -72,22 +72,39 @@ namespace WellCarePharmacyWebapi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    UsersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Orders_Users_UsersId",
                         column: x => x.UsersId,
                         principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderProduct",
+                columns: table => new
+                {
+                    OrdersId = table.Column<int>(type: "int", nullable: false),
+                    ProductsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderProduct", x => new { x.OrdersId, x.ProductsId });
+                    table.ForeignKey(
+                        name: "FK_OrderProduct_Orders_OrdersId",
+                        column: x => x.OrdersId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderProduct_Products_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -97,12 +114,9 @@ namespace WellCarePharmacyWebapi.Migrations
                 columns: new[] { "Id", "Descripition", "Discount", "ImageUrl", "Price", "ProductName", "Status" },
                 values: new object[,]
                 {
-                    { 3, "soap made with charcoal", 45m, "iwyer", 0m, "Active Charcoal Soap", "Available" },
-                    { 4, "soap made with charcoal", 45m, "iwyer", 0m, "Active Soap", "NotAvailable" },
-                    { 5, "soap made with charcoal", 45m, "iwyer", 0m, "Active Charcoal Soap", "Available" },
-                    { 6, "soap made with charcoal", 45m, "iwyer", 0m, "Active Soap", "NotAvailable" },
-                    { 7, "soap made with charcoal", 45m, "iwyer", 0m, "Active Charcoal Soap", "Available" },
-                    { 8, "soap made with charcoal", 45m, "iwyer", 0m, "Active Soap", "NotAvailable" }
+                    { 1, "Omron Fully Automatic Digital Blood Pressure", 27m, "https://tse2.mm.bing.net/th?id=OIP.EFGgzbJGFafyu3ySSQcqHgHaHa&pid=Api&P=0&h=180", 1950m, "Blood Pressure Monitor", "Avaliable" },
+                    { 2, "Apollo life Fish oil Capsule contains Omega  fatty acids,.", 10m, "https://newassets.apollo247.com/pub/media/catalog/product/a/p/apo0077-1.jpg", 200m, "Apollo Life  Fish Oil  ", "Avaliable" },
+                    { 3, "A cough drop is Ayurvedic Lozenges designed to deliver active .", 0m, "https://tse1.mm.bing.net/th?id=OIP.49yPPmnmItW7P3c3ffCuygHaHa&pid=Api&P=0&h=180", 25m, "Apollo Life Cough Drops Lozengest", "NotAvaliable" }
                 });
 
             migrationBuilder.InsertData(
@@ -114,35 +128,10 @@ namespace WellCarePharmacyWebapi.Migrations
                     { 2, "Customer" }
                 });
 
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Email", "Name", "Password", "PhoneNumber", "RegisteredOn", "RoleId" },
-                values: new object[] { 1, "siva@gmail.com", "siva", "12345678", "9700469909", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Email", "Name", "Password", "PhoneNumber", "RegisteredOn", "RoleId" },
-                values: new object[] { 2, "priya@gmail.com", "priya", "12345678", "9709876678", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Email", "Name", "Password", "PhoneNumber", "RegisteredOn", "RoleId" },
-                values: new object[] { 3, "admin", "admin", "admin", "9999999999", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 });
-
-            migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "Id", "ProductId", "Quantity", "TotalPrice", "UsersId" },
-                values: new object[] { 1, 3, 3, 345m, 1 });
-
-            migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "Id", "ProductId", "Quantity", "TotalPrice", "UsersId" },
-                values: new object[] { 2, 6, 5, 500m, 2 });
-
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_ProductId",
-                table: "Orders",
-                column: "ProductId");
+                name: "IX_OrderProduct_ProductsId",
+                table: "OrderProduct",
+                column: "ProductsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UsersId",
@@ -157,6 +146,9 @@ namespace WellCarePharmacyWebapi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "OrderProduct");
+
             migrationBuilder.DropTable(
                 name: "Orders");
 

@@ -17,10 +17,7 @@ namespace WellCarePharmacyWebapi.Models.Entities
         [ForeignKey("UsersId")]
         public virtual User Users { get; set; }
 
-
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
-        public virtual Product Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
     }
 }

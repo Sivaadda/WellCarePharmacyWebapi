@@ -16,7 +16,7 @@ namespace WellCarePharmacyWebapi.Models.Repository.Imp
 
         public async Task<IEnumerable<Order>> GetAllorders()
         {
-            return await _context.Set<Order>().Include(o => o.Products).Include(o => o.Users).ToListAsync();
+            return await _context.Set<Order>().Include(o => o.Products).Include(o => o.Users).ThenInclude(u => u.Roles).ToListAsync();
         }
 
     }

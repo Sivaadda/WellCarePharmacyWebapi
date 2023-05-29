@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
 using WellCarePharmacyWebapi.Models.Entities;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
@@ -21,12 +22,25 @@ namespace WellCarePharmacyWebapi.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductRequest>>> GetAllProducts()
         {
 
             try
             {
-                return Ok(await _repositoryWrapper.Products.GetAll());
+                var products = await _repositoryWrapper.Products.GetAll();
+                var productresponds = products.Select(p => new ProductRespond
+                {
+                   Id= p.Id,
+                   ProductName = p.ProductName,
+                   Price= p.Price,
+                   Descripition= p.Descripition,
+                   Discount= p.Discount,
+                   Status= p.Status,
+                   ImageUrl= p.ImageUrl,
+
+                }).ToList();
+
+                return Ok(productresponds);
             }
             catch (Exception)
             {
@@ -48,7 +62,20 @@ namespace WellCarePharmacyWebapi.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(value);
+                var productDTO = new ProductRespond
+                {
+                    Id = value.Id,
+                    ProductName = value.ProductName,
+                    Price = value.Price,
+                    Descripition = value.Descripition,
+                    Discount = value.Discount,
+                    Status = value.Status,
+                    ImageUrl = value.ImageUrl,
+
+                };
+
+                return Ok(productDTO);
+                
             }
             catch (Exception)
             {
@@ -63,7 +90,7 @@ namespace WellCarePharmacyWebapi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<ProductDTO>> PostProduct([FromBody] ProductDTO product)
+        public async Task<ActionResult<ProductRequest>> PostProduct([FromBody] ProductRequest product)
         {
             try
             {
@@ -86,7 +113,9 @@ namespace WellCarePharmacyWebapi.Controllers
                 };
                 await _repositoryWrapper.Products.Create(products);
                 _repositoryWrapper.Save();
-                return CreatedAtRoute("GetProduct", new { id = products.Id}, products);
+
+                
+                return Ok("Product is created sucessfully") ;
             }
             catch (Exception)
             {
@@ -101,7 +130,7 @@ namespace WellCarePharmacyWebapi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDTO product)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductRequest product)
         {
             try
             {
@@ -118,7 +147,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                     await _repositoryWrapper.Products.Update(productsid);
                     _repositoryWrapper.Save();
-                    return Ok(productsid);
+                    return Ok("Product updated sucessfully");
                 }
               
                 return NotFound();

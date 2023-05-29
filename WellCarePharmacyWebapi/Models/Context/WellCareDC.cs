@@ -28,7 +28,7 @@ namespace WellCarePharmacyWebapi.Models.Context
                 Id = 1,
                 ProductName = "Blood Pressure Monitor",
                 Price = 1950,
-                Descripition = "Omron HEM 7120 Fully Automatic Digital Blood Pressure Monitor with Intellisense Technology for most accurate measurement",
+                Descripition = "Omron Fully Automatic Digital Blood Pressure",
                 Discount = 27,
                 Status = "Avaliable",
                 ImageUrl = "https://tse2.mm.bing.net/th?id=OIP.EFGgzbJGFafyu3ySSQcqHgHaHa&pid=Api&P=0&h=180"
@@ -36,9 +36,9 @@ namespace WellCarePharmacyWebapi.Models.Context
             var product2 = new Product
             {
                 Id = 2,
-                ProductName = "Apollo Life Omega-3 Fish Oil 1000 mg, 30 Capsules\r\n",
+                ProductName = "Apollo Life  Fish Oil  ",
                 Price = 200,
-                Descripition = "Apollo life Fish oil Capsule contains Omega -3 fatty acids, Eicosapentaenoic acid (EPA) and Docosahexaenoic acid (DHA) which promotes healthy heart, brain and strengthens joints.\r\nIt is purified form of omega 3 which is free from heavy metals.",
+                Descripition = "Apollo life Fish oil Capsule contains Omega fatty acids,.",
                 Discount = 10,
                 Status = "Avaliable",
                 ImageUrl = "https://newassets.apollo247.com/pub/media/catalog/product/a/p/apo0077-1.jpg"
@@ -46,9 +46,9 @@ namespace WellCarePharmacyWebapi.Models.Context
             var product3 = new Product
             {
                 Id = 3,
-                ProductName = "Apollo Life Cough Drops Lozenges, 25 Count",
+                ProductName = "Apollo Life Cough Drops Lozengest",
                 Price = 25,
-                Descripition = "A cough drop is Ayurvedic Lozenges designed to deliver active ingredients which suppress or relieve the cough reflex anyone who has gotten sick knows the sensation of a cough. \r\nIt is a natural reflex that helps protect the body from infections.",
+                Descripition = "A cough drop is Ayurvedic Lozenges designed to deliver active .",
                 Discount = 0,
                 Status = "NotAvaliable",
                 ImageUrl = "https://tse1.mm.bing.net/th?id=OIP.49yPPmnmItW7P3c3ffCuygHaHa&pid=Api&P=0&h=180"

@@ -3,6 +3,9 @@ using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
 using WellCarePharmacyWebapi.Models.Entities;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace WellCarePharmacyWebapi.Controllers
 {
@@ -25,7 +28,9 @@ namespace WellCarePharmacyWebapi.Controllers
         {
             try
             {
-                return Ok(await _repositoryWrapper.Orders.GetAllorders());
+             
+                var orders = await _repositoryWrapper.Orders.GetAllorders();
+                return Ok(orders);
 
             }
             catch (Exception)
@@ -54,44 +59,36 @@ namespace WellCarePharmacyWebapi.Controllers
                 {
                     Quantity = orders.Quantity,
                     TotalPrice = orders.TotalPrice,
-                    ProductId = orders.ProductId,
-                    UsersId = orders.UsersId
+                    UsersId = orders.UsersId,
+
+                    Products = new List<Product>()
                 };
 
-                // Retrieve the associated product based on the product ID
-                Product product = await _repositoryWrapper.Products.GetById(orders.ProductId);
-                if (product == null)
-                {
-                    return NotFound($"Product with ID {orders.ProductId} not found.");
-                }
-
-                // Retrieve the associated user based on the user ID
-                User user = await _repositoryWrapper.Users.GetuserById(orders.UsersId);
+                User user = await _repositoryWrapper.Users.GetById(orders.UsersId);
                 if (user == null)
                 {
                     return NotFound($"User with ID {orders.UsersId} not found.");
                 }
 
-                order.Products = product;
+                foreach (ProductOrderRequest productOrderReq in orders.Products)
+                {
+                    // Retrieve the associated product based on the product ID
+                    Product product = await _repositoryWrapper.Products.GetById(productOrderReq.ProductId);
+                    if (product == null)
+                    {
+                        return NotFound($"Product with ID {productOrderReq.ProductId} not found.");
+                    }
+
+                    // Add the product to the order
+                    order.Products.Add(product);
+                }
+
                 order.Users = user;
 
                 await _repositoryWrapper.Orders.Create(order);
                 _repositoryWrapper.Save();
 
-                // Map the order, product, and user to the OrdersDTO for response
-                OrderRespond response = new OrderRespond
-                {
-                    Id = order.Id,
-                    Quantity = order.Quantity,
-                    TotalPrice = order.TotalPrice,
-                    ProductId = order.ProductId,
-                    UsersId = order.UsersId,
-                    Products= order.Products,
-                    Users= order.Users,
-
-                };
-
-                return Ok(response);
+                return Ok("order is created sucessfully");
             }
             catch (Exception)
             {

@@ -18,9 +18,16 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
          public int UsersId { get; set; }
 
 
-         [ForeignKey("Product")]
-         public int ProductId { get; set; }
+        [Required] 
+         public IList<ProductOrderRequest> Products { get; set; }
       
 
     }
+     
+    public class ProductOrderRequest
+    {
+         [ForeignKey("Product")]
+         public int ProductId { get; set; }
+    
+     }
 }

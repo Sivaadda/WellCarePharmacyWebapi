@@ -22,6 +22,21 @@ namespace WellCarePharmacyWebapi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("OrderProduct", b =>
+                {
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrdersId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("OrderProduct");
+                });
+
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -29,9 +44,6 @@ namespace WellCarePharmacyWebapi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -44,29 +56,9 @@ namespace WellCarePharmacyWebapi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("UsersId");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ProductId = 3,
-                            Quantity = 3,
-                            TotalPrice = 345m,
-                            UsersId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ProductId = 6,
-                            Quantity = 5,
-                            TotalPrice = 500m,
-                            UsersId = 2
-                        });
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Product", b =>
@@ -108,63 +100,33 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 7,
-                            Descripition = "soap made with charcoal",
-                            Discount = 45m,
-                            ImageUrl = "iwyer",
-                            Price = 455m,
-                            ProductName = "Active Charcoal Soap",
-                            Status = "Available"
+                            Id = 1,
+                            Descripition = "Omron Fully Automatic Digital Blood Pressure",
+                            Discount = 27m,
+                            ImageUrl = "https://tse2.mm.bing.net/th?id=OIP.EFGgzbJGFafyu3ySSQcqHgHaHa&pid=Api&P=0&h=180",
+                            Price = 1950m,
+                            ProductName = "Blood Pressure Monitor",
+                            Status = "Avaliable"
                         },
                         new
                         {
-                            Id = 8,
-                            Descripition = "soap made with charcoal",
-                            Discount = 45m,
-                            ImageUrl = "iwyer",
-                            Price = 455m,
-                            ProductName = "Active Soap",
-                            Status = "NotAvailable"
+                            Id = 2,
+                            Descripition = "Apollo life Fish oil Capsule contains Omega  fatty acids,.",
+                            Discount = 10m,
+                            ImageUrl = "https://newassets.apollo247.com/pub/media/catalog/product/a/p/apo0077-1.jpg",
+                            Price = 200m,
+                            ProductName = "Apollo Life  Fish Oil  ",
+                            Status = "Avaliable"
                         },
                         new
                         {
                             Id = 3,
-                            Descripition = "soap made with charcoal",
-                            Discount = 45m,
-                            ImageUrl = "iwyer",
-                            Price = 455m,
-                            ProductName = "Active Charcoal Soap",
-                            Status = "Available"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Descripition = "soap made with charcoal",
-                            Discount = 45m,
-                            ImageUrl = "iwyer",
-                            Price = 455m,
-                            ProductName = "Active Soap",
-                            Status = "NotAvailable"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Descripition = "soap made with charcoal",
-                            Discount = 45m,
-                            ImageUrl = "iwyer",
-                            Price = 455m,
-                            ProductName = "Active Charcoal Soap",
-                            Status = "Available"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Descripition = "soap made with charcoal",
-                            Discount = 45m,
-                            ImageUrl = "iwyer",
-                            Price = 455m,
-                            ProductName = "Active Soap",
-                            Status = "NotAvailable"
+                            Descripition = "A cough drop is Ayurvedic Lozenges designed to deliver active .",
+                            Discount = 0m,
+                            ImageUrl = "https://tse1.mm.bing.net/th?id=OIP.49yPPmnmItW7P3c3ffCuygHaHa&pid=Api&P=0&h=180",
+                            Price = 25m,
+                            ProductName = "Apollo Life Cough Drops Lozengest",
+                            Status = "NotAvaliable"
                         });
                 });
 
@@ -233,55 +195,30 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "siva@gmail.com",
-                            Name = "siva",
-                            Password = "12345678",
-                            PhoneNumber = "9700469909",
-                            RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "priya@gmail.com",
-                            Name = "priya",
-                            Password = "12345678",
-                            PhoneNumber = "9709876678",
-                            RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "admin@gmail.com",
-                            Name = "admin",
-                            Password = "admin123",
-                            PhoneNumber = "9999999999",
-                            RegisteredOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = 1
-                        });
+            modelBuilder.Entity("OrderProduct", b =>
+                {
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Order", b =>
                 {
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Product", "Products")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WellCarePharmacyWebapi.Models.Entities.User", "Users")
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Products");
 
                     b.Navigation("Users");
                 });

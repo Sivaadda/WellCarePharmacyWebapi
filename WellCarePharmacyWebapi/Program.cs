@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 using WellCarePharmacyWebapi.Infrastructure;
 using WellCarePharmacyWebapi.Models.Context;
 using WellCarePharmacyWebapi.Models.Repository.Imp;
@@ -27,7 +28,12 @@ namespace WellCarePharmacyWebapi
                     build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
                 }));
             builder.RegisterProjectDependencies();
-            builder.Services.AddControllers();
+          //  builder.Services.AddControllers();
+
+            
+               builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
  
