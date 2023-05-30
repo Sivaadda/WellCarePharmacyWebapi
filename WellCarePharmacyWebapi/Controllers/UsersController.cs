@@ -61,7 +61,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 await _repositoryWrapper.Users.Delete(id);
                 _repositoryWrapper.Save();
-                return Ok("User is delected sucessfully");
+                return Ok("User sucessfully delected");
             }
             catch (Exception)
             {

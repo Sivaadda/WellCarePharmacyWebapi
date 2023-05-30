@@ -30,7 +30,7 @@ namespace WellCarePharmacyWebapi.Models.Context
                 Price = 1950,
                 Descripition = "Omron Fully Automatic Digital Blood Pressure",
                 Discount = 27,
-                Status = "Avaliable",
+                Status = "InStock",
                 ImageUrl = "https://tse2.mm.bing.net/th?id=OIP.EFGgzbJGFafyu3ySSQcqHgHaHa&pid=Api&P=0&h=180"
             };
             var product2 = new Product
@@ -40,7 +40,7 @@ namespace WellCarePharmacyWebapi.Models.Context
                 Price = 200,
                 Descripition = "Apollo life Fish oil Capsule contains Omega fatty acids,.",
                 Discount = 10,
-                Status = "Avaliable",
+                Status = "InStock",
                 ImageUrl = "https://newassets.apollo247.com/pub/media/catalog/product/a/p/apo0077-1.jpg"
             };
             var product3 = new Product
@@ -50,7 +50,7 @@ namespace WellCarePharmacyWebapi.Models.Context
                 Price = 25,
                 Descripition = "A cough drop is Ayurvedic Lozenges designed to deliver active .",
                 Discount = 0,
-                Status = "NotAvaliable",
+                Status = "Out of Stock",
                 ImageUrl = "https://tse1.mm.bing.net/th?id=OIP.49yPPmnmItW7P3c3ffCuygHaHa&pid=Api&P=0&h=180"
             };
             modelBuilder.Entity<Product>().HasData(product1, product2, product3);

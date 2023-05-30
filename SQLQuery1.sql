@@ -1,4 +1,4 @@
-﻿Select * from products;
-select * from users;
-select * from Roles;
+﻿select * from products;
+select  * from users;
+select * from roles;
 select * from orders;

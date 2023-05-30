@@ -12,7 +12,7 @@ using WellCarePharmacyWebapi.Models.Context;
 namespace WellCarePharmacyWebapi.Migrations
 {
     [DbContext(typeof(WellCareDC))]
-    [Migration("20230529180221_initial")]
+    [Migration("20230530042752_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -108,17 +108,17 @@ namespace WellCarePharmacyWebapi.Migrations
                             ImageUrl = "https://tse2.mm.bing.net/th?id=OIP.EFGgzbJGFafyu3ySSQcqHgHaHa&pid=Api&P=0&h=180",
                             Price = 1950m,
                             ProductName = "Blood Pressure Monitor",
-                            Status = "Avaliable"
+                            Status = "InStock"
                         },
                         new
                         {
                             Id = 2,
-                            Descripition = "Apollo life Fish oil Capsule contains Omega  fatty acids,.",
+                            Descripition = "Apollo life Fish oil Capsule contains Omega fatty acids,.",
                             Discount = 10m,
                             ImageUrl = "https://newassets.apollo247.com/pub/media/catalog/product/a/p/apo0077-1.jpg",
                             Price = 200m,
                             ProductName = "Apollo Life  Fish Oil  ",
-                            Status = "Avaliable"
+                            Status = "InStock"
                         },
                         new
                         {
@@ -128,7 +128,7 @@ namespace WellCarePharmacyWebapi.Migrations
                             ImageUrl = "https://tse1.mm.bing.net/th?id=OIP.49yPPmnmItW7P3c3ffCuygHaHa&pid=Api&P=0&h=180",
                             Price = 25m,
                             ProductName = "Apollo Life Cough Drops Lozengest",
-                            Status = "NotAvaliable"
+                            Status = "Out of Stock"
                         });
                 });
 

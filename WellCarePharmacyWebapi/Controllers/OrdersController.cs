@@ -30,7 +30,25 @@ namespace WellCarePharmacyWebapi.Controllers
             {
              
                 var orders = await _repositoryWrapper.Orders.GetAllorders();
-                return Ok(orders);
+                var orderrequest = orders.Select(p => new OrderRespond
+                {
+                    Id = p.Id,
+                    Quantity = p.Quantity,
+                    TotalPrice = p.TotalPrice,
+                    Users = p.Users,
+                    Products = p.Products.Select(p => new ProductOrderRespond 
+                    {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    Price = p.Price,
+                    Descripition=p.Descripition,
+                    Discount=p.Discount,
+                    Status=p.Status
+
+
+                    }).ToList()
+                }).ToList();
+                return Ok(orderrequest);
 
             }
             catch (Exception)
@@ -60,7 +78,6 @@ namespace WellCarePharmacyWebapi.Controllers
                     Quantity = orders.Quantity,
                     TotalPrice = orders.TotalPrice,
                     UsersId = orders.UsersId,
-
                     Products = new List<Product>()
                 };
 
@@ -88,7 +105,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 await _repositoryWrapper.Orders.Create(order);
                 _repositoryWrapper.Save();
 
-                return Ok("order is created sucessfully");
+                return Ok("Order is successfully placed");
             }
             catch (Exception)
             {
@@ -115,7 +132,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 await _repositoryWrapper.Orders.Delete(id);
                 _repositoryWrapper.Save();
-                return Ok("Order is sucessfully delected");
+                return Ok("Order is successfully delected");
             }
             catch (Exception)
             {

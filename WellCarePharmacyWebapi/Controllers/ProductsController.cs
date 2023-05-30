@@ -115,7 +115,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 _repositoryWrapper.Save();
 
                 
-                return Ok("Product is created sucessfully") ;
+                return Ok("Product is successfully added") ;
             }
             catch (Exception)
             {
@@ -147,7 +147,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                     await _repositoryWrapper.Products.Update(productsid);
                     _repositoryWrapper.Save();
-                    return Ok("Product updated sucessfully");
+                    return Ok("Product sucessfully updated ");
                 }
               
                 return NotFound();
@@ -180,7 +180,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 await _repositoryWrapper.Products.Delete(id);
                 _repositoryWrapper.Save();
-                return Ok("Product is delected successfully");
+                return Ok("Product successfully delected ");
             }
             catch (Exception)
             {

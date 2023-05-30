@@ -114,9 +114,9 @@ namespace WellCarePharmacyWebapi.Migrations
                 columns: new[] { "Id", "Descripition", "Discount", "ImageUrl", "Price", "ProductName", "Status" },
                 values: new object[,]
                 {
-                    { 1, "Omron Fully Automatic Digital Blood Pressure", 27m, "https://tse2.mm.bing.net/th?id=OIP.EFGgzbJGFafyu3ySSQcqHgHaHa&pid=Api&P=0&h=180", 1950m, "Blood Pressure Monitor", "Avaliable" },
-                    { 2, "Apollo life Fish oil Capsule contains Omega  fatty acids,.", 10m, "https://newassets.apollo247.com/pub/media/catalog/product/a/p/apo0077-1.jpg", 200m, "Apollo Life  Fish Oil  ", "Avaliable" },
-                    { 3, "A cough drop is Ayurvedic Lozenges designed to deliver active .", 0m, "https://tse1.mm.bing.net/th?id=OIP.49yPPmnmItW7P3c3ffCuygHaHa&pid=Api&P=0&h=180", 25m, "Apollo Life Cough Drops Lozengest", "NotAvaliable" }
+                    { 1, "Omron Fully Automatic Digital Blood Pressure", 27m, "https://tse2.mm.bing.net/th?id=OIP.EFGgzbJGFafyu3ySSQcqHgHaHa&pid=Api&P=0&h=180", 1950m, "Blood Pressure Monitor", "InStock" },
+                    { 2, "Apollo life Fish oil Capsule contains Omega fatty acids,.", 10m, "https://newassets.apollo247.com/pub/media/catalog/product/a/p/apo0077-1.jpg", 200m, "Apollo Life  Fish Oil  ", "InStock" },
+                    { 3, "A cough drop is Ayurvedic Lozenges designed to deliver active .", 0m, "https://tse1.mm.bing.net/th?id=OIP.49yPPmnmItW7P3c3ffCuygHaHa&pid=Api&P=0&h=180", 25m, "Apollo Life Cough Drops Lozengest", "Out of Stock" }
                 });
 
             migrationBuilder.InsertData(
