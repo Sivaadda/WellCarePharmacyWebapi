@@ -36,7 +36,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 if (loginRequest != null && loginRequest.Email != null && loginRequest.Password != null)
                 {
 
-                    var user = await _repositoryWrapper.Users.Include(u => u.Roles).FirstOrDefaultAsync(o => o.Email == loginRequest.Email && o.Password == EncryptPassword(loginRequest.Password));
+                    var user = await _repositoryWrapper.Users.Include(u => u.Roles).FirstOrDefaultAsync(o => o.Email == loginRequest.Email && o.Password == loginRequest.Password);
 
                     if (user != null)
                     {
@@ -55,8 +55,9 @@ namespace WellCarePharmacyWebapi.Controllers
                             claims,
                             expires: DateTime.Now.AddMinutes(15),
                             signingCredentials: signIn);
-
-                        return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                        var Token = new JwtSecurityTokenHandler().WriteToken(token);
+                        var roleid = user.RoleId;
+                        return Ok(new {Token,roleid});
                     }
                     return BadRequest("Invalid credentials");
                 }
@@ -84,7 +85,7 @@ namespace WellCarePharmacyWebapi.Controllers
                     Name = registration.Name,
                     Email = registration.Email,
                     PhoneNumber = registration.PhoneNumber,
-                    Password = EncryptPassword(registration.Password),
+                    Password = registration.Password,
                     RoleId = 2,
                     Roles = role
 

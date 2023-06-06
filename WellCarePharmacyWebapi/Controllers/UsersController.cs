@@ -25,7 +25,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
       
 
-        [Authorize(Roles = "1")]
+       // [Authorize(Roles = "1")]
         [HttpGet(Name = "GetAllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -44,7 +44,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpDelete("id")]
-        [Authorize(Roles = "1")]
+       // [Authorize(Roles = "1")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

@@ -22,7 +22,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
 
         [HttpGet("GetAllOrders")]
-        [AllowAnonymous]
+       // [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrdersRequest>>> GetAllOrders()
         {
@@ -58,7 +58,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpPost("AddOrder")]
-        [Authorize(Roles = "2")]
+       // [Authorize(Roles = "2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -115,7 +115,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpDelete("id")]
-        [Authorize(Roles = "2")]
+       // [Authorize(Roles = "2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
