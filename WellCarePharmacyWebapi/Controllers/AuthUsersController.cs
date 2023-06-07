@@ -57,7 +57,8 @@ namespace WellCarePharmacyWebapi.Controllers
                             signingCredentials: signIn);
                         var Token = new JwtSecurityTokenHandler().WriteToken(token);
                         var roleid = user.RoleId;
-                        return Ok(new {Token,roleid});
+                        var userid = user.Id;
+                        return Ok(new {Token,roleid, userid});
                     }
                     return BadRequest("Invalid credentials");
                 }
