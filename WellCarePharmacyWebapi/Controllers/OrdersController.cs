@@ -3,9 +3,7 @@ using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
 using WellCarePharmacyWebapi.Models.Entities;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace WellCarePharmacyWebapi.Controllers
 {
@@ -22,7 +20,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
 
         [HttpGet("GetAllOrders")]
-       // [AllowAnonymous]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrdersRequest>>> GetAllOrders()
         {
@@ -58,7 +56,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpPost("AddOrder")]
-       // [Authorize(Roles = "2")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -105,7 +103,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 await _repositoryWrapper.Orders.Create(order);
                 _repositoryWrapper.Save();
 
-                return Ok("Order is successfully placed");
+                return Ok(user);
             }
             catch (Exception)
             {
@@ -114,8 +112,9 @@ namespace WellCarePharmacyWebapi.Controllers
 
         }
 
+
         [HttpDelete("id")]
-       // [Authorize(Roles = "2")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -137,6 +136,30 @@ namespace WellCarePharmacyWebapi.Controllers
             catch (Exception)
             {
                 return StatusCode(500, "An error occurred while delecting Order.");
+            }
+
+        }
+
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        [HttpGet("id", Name = "Getproductbyid")]
+        public async Task<IActionResult> GetOrderId(int id)
+        {
+            try
+            {
+                var value = await _repositoryWrapper.Orders.Getorderbyid(id);
+                if (value == null)
+                {
+                    return NotFound();
+                }
+                return Ok(value);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while feching order by id.");
             }
 
         }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
 using WellCarePharmacyWebapi.Models.Entities;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
@@ -19,7 +18,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
        
         [HttpGet("GetAllProducts")]
-       // [Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         
         public async Task<ActionResult<IEnumerable<ProductRequest>>> GetAllProducts()
@@ -48,7 +47,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
         }
 
-      //  [AllowAnonymous]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         
@@ -85,7 +84,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpPost("AddProduct")]
-       // [Authorize(Roles = "1")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -125,7 +124,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpPut("id")]
-       // [Authorize(Roles = "1")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -162,7 +161,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpDelete("id")]
-       // [Authorize(Roles = "1")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

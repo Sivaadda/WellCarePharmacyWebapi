@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
+using Newtonsoft.Json.Linq;
 using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
-using WellCarePharmacyWebapi.Models.Context;
-using WellCarePharmacyWebapi.Models.Entities;
 using WellCarePharmacyWebapi.Models.Repository.Interfaces;
 
 namespace WellCarePharmacyWebapi.Controllers
@@ -25,7 +21,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
       
 
-       // [Authorize(Roles = "1")]
+        [Authorize]
         [HttpGet(Name = "GetAllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -43,8 +39,31 @@ namespace WellCarePharmacyWebapi.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("id", Name = "GetUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetUser(int id)
+        {
+            try
+            {
+                var user = await _repositoryWrapper.Users.GetuserById(id);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving user.");
+            }
+        }
         [HttpDelete("id")]
-       // [Authorize(Roles = "1")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

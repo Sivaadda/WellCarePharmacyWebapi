@@ -19,6 +19,11 @@ namespace WellCarePharmacyWebapi.Models.Repository.Imp
             return await _context.Set<Order>().Include(o => o.Products).Include(o => o.Users).ThenInclude(u => u.Roles).ToListAsync();
         }
 
+        public async Task<Order> Getorderbyid(int id)
+        {
+            return await _context.Set<Order>().Include(o => o.Products).Include(o => o.Users).ThenInclude(u => u.Roles).FirstOrDefaultAsync(u => u.Id == id);
+        }
+
     }
 
 }

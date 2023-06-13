@@ -8,5 +8,7 @@ namespace WellCarePharmacyWebapi.Models.Repository.Interfaces
         Task<IEnumerable<User>> GetAllusers();
         Task<User> GetuserById(int id);
 
+        
+
     }
 }
