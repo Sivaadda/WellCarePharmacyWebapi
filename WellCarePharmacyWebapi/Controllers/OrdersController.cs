@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace WellCarePharmacyWebapi.Controllers
 {
@@ -22,7 +23,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
 
         [HttpGet("GetAllOrders")]
-       // [AllowAnonymous]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrdersRequest>>> GetAllOrders()
         {
@@ -57,8 +58,30 @@ namespace WellCarePharmacyWebapi.Controllers
             }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("id", Name = "GetOrder")]
+        public async Task<IActionResult> GetOrder(int id)
+        {
+            try
+            {
+                var value = await _repositoryWrapper.Orders.Getorder(id);
+                if (value == null)
+                {
+                    return NotFound();
+                }
+              return Ok(value);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while feching order by id.");
+            }
+
+        }
+
         [HttpPost("AddOrder")]
-       // [Authorize(Roles = "2")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -84,7 +107,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 User user = await _repositoryWrapper.Users.GetById(orders.UsersId);
                 if (user == null)
                 {
-                    return NotFound($"User with ID {orders.UsersId} not found.");
+                    return NotFound($"User with ID 5 not found.");
                 }
 
                 foreach (ProductOrderRequest productOrderReq in orders.Products)
@@ -105,7 +128,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 await _repositoryWrapper.Orders.Create(order);
                 _repositoryWrapper.Save();
 
-                return Ok("Order is successfully placed");
+                return Ok(order);
             }
             catch (Exception)
             {
@@ -115,7 +138,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpDelete("id")]
-       // [Authorize(Roles = "2")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

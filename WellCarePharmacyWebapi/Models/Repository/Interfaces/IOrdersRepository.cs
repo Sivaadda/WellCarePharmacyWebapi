@@ -6,6 +6,6 @@ namespace WellCarePharmacyWebapi.Models.Repository.Interfaces
     {
         Task<IEnumerable<Order>> GetAllorders();
 
-
+        Task<Order> Getorder(int id);
     }
 }
