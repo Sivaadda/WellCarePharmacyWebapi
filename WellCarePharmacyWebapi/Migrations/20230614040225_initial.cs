@@ -17,7 +17,7 @@ namespace WellCarePharmacyWebapi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Descripition = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Descripition = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)

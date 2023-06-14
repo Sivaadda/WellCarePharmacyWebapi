@@ -75,7 +75,7 @@ namespace WellCarePharmacyWebapi.Controllers
         {
             try
             {
-                var role = await _repositoryWrapper.Roles.FindAsync(2);
+                var role = await _repositoryWrapper.Roles.FindAsync(1);
 
                 if (registration == null)
                 {
@@ -87,7 +87,7 @@ namespace WellCarePharmacyWebapi.Controllers
                     Email = registration.Email,
                     PhoneNumber = registration.PhoneNumber,
                     Password = EncryptPassword(registration.Password),
-                    RoleId = 2,
+                    RoleId = 1,
                     Roles = role
 
                 };

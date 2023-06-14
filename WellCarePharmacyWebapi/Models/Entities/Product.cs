@@ -12,7 +12,7 @@ namespace WellCarePharmacyWebapi.Models.Entities
         [Required]
         public decimal Price { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(500)]
         public string Descripition { get; set; }
 
         public decimal Discount { get; set; }
