@@ -23,7 +23,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
 
         [HttpGet("GetAllOrders")]
-        [AllowAnonymous]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrdersRequest>>> GetAllOrders()
         {
@@ -58,7 +58,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
         }
 
-
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("id", Name = "GetOrder")]
@@ -129,7 +129,7 @@ namespace WellCarePharmacyWebapi.Controllers
                 await _repositoryWrapper.Orders.Create(order);
                 _repositoryWrapper.Save();
 
-                return Ok(order);
+                return Ok("order is successfully placed");
             }
             catch (Exception)
             {
@@ -156,11 +156,11 @@ namespace WellCarePharmacyWebapi.Controllers
 
                 await _repositoryWrapper.Orders.Delete(id);
                 _repositoryWrapper.Save();
-                return Ok("Order is successfully delected");
+                return Ok("Order is successfully deleted");
             }
             catch (Exception)
             {
-                return StatusCode(500, "An error occurred while delecting Order.");
+                return StatusCode(500, "An error occurred while deleting Order.");
             }
 
         }
