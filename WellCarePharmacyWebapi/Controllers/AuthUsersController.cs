@@ -58,7 +58,8 @@ namespace WellCarePharmacyWebapi.Controllers
                         var Token = new JwtSecurityTokenHandler().WriteToken(token);
                         var roleid = user.RoleId;
                         var userid = user.Id;
-                        return Ok(new {Token,roleid, userid});
+                        var expires = DateTime.Now.AddMinutes(60);
+                        return Ok(new {Token,roleid, userid, expires});
                     }
                     return BadRequest("Invalid credentials");
                 }
@@ -75,7 +76,7 @@ namespace WellCarePharmacyWebapi.Controllers
         {
             try
             {
-                var role = await _repositoryWrapper.Roles.FindAsync(1);
+                var role = await _repositoryWrapper.Roles.FindAsync(2);
 
                 if (registration == null)
                 {
@@ -87,7 +88,7 @@ namespace WellCarePharmacyWebapi.Controllers
                     Email = registration.Email,
                     PhoneNumber = registration.PhoneNumber,
                     Password = EncryptPassword(registration.Password),
-                    RoleId = 1,
+                    RoleId = 2,
                     Roles = role
 
                 };
