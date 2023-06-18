@@ -10,7 +10,7 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
         public int Id { get; set; }
 
         [Required]
-        public int Quantity { get; set; }
+        public int TotalQuantity { get; set; }
 
         [Required]
         public decimal TotalPrice { get; set; }
@@ -34,22 +34,11 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
         [MaxLength(50)]
         public string ProductName { get; set; }
 
-        [Required]
         public decimal Price { get; set; }
 
-        [MaxLength(100)]
-        public string Descripition { get; set; }
-
-        public decimal Discount { get; set; }
-
-        [Required]
-        [MaxLength(30)]
-        public string Status { get; set; }
+        public int Quantity { get; set; }
 
     }
-
-
-
 
 }
 

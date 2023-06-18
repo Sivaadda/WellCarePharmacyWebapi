@@ -9,7 +9,7 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
        
 
         [Required]
-        public int Quantity { get; set; }
+        public int TotalQuantity { get; set; }
 
         [Required]
         public decimal TotalPrice { get; set; }
@@ -23,11 +23,14 @@ namespace WellCarePharmacyWebapi.Business_Logic_Layer.DTO
       
 
     }
-     
+
     public class ProductOrderRequest
     {
-         [ForeignKey("Product")]
-         public int ProductId { get; set; }
+        [ForeignKey("Product")]
+        public int ProductId { get; set; }
+
+        [Required]
+        public int Quantity { get; set; }
     
      }
 }

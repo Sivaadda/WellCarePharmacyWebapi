@@ -16,12 +16,12 @@ namespace WellCarePharmacyWebapi.Models.Repository.Imp
 
         public async Task<IEnumerable<Order>> GetAllorders()
         {
-            return await _context.Set<Order>().Include(o => o.Products).Include(o => o.Users).ThenInclude(u => u.Roles).ToListAsync();
+            return await _context.Set<Order>().Include(o => o.ProductOrders).ThenInclude(o => o.Product).Include(o => o.Users).ThenInclude(u => u.Roles).ToListAsync();
         }
 
         public async Task<Order> Getorder(int id)
         {
-            return await _context.Set<Order>().Include(o => o.Products).Include(o => o.Users).ThenInclude(u => u.Roles).FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Set<Order>().Include(o => o.ProductOrders).ThenInclude(o => o.Product).Include(o => o.Users).ThenInclude(u => u.Roles).FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 

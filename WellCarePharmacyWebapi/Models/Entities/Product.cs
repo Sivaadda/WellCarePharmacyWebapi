@@ -24,7 +24,6 @@ namespace WellCarePharmacyWebapi.Models.Entities
         [Required]
         public string ImageUrl { get; set; }
 
-        public virtual ICollection<Order> Orders { get; set; }
 
     }
 }

@@ -31,7 +31,7 @@ namespace WellCarePharmacyWebApi.Test
         {
             // Arrange
             var orderId = 1;
-            var order = new Order { Id = orderId, Quantity = 5 };
+            var order = new Order { Id = orderId, TotalQuantity = 5 };
             repositoryWrapperMock.Setup(x => x.Orders.Getorder(orderId)).ReturnsAsync(order);
 
             // Act

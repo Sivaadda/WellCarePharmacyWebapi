@@ -8,7 +8,7 @@ namespace WellCarePharmacyWebapi.Models.Entities
     {
        
         [Required]
-        public int Quantity { get; set; }
+        public int TotalQuantity { get; set; }
 
         [Required]
         public decimal TotalPrice { get; set; }
@@ -17,7 +17,25 @@ namespace WellCarePharmacyWebapi.Models.Entities
         [ForeignKey("UsersId")]
         public virtual User Users { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
 
+        public virtual ICollection<ProductOrder> ProductOrders { get; set; }
+    }
+
+    public class ProductOrder
+    {
+        [Key]
+        public int ProductOrderId { get; set; }
+
+        [ForeignKey("Product")]
+        public int ProductId { get; set; }
+
+        [Required]
+        public int Quantity { get; set; }
+
+        public virtual Product Product { get; set; }
+
+        public int OrderId { get; set; }
+        public virtual Order Order { get; set; }
     }
 }
+
