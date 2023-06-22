@@ -23,7 +23,7 @@ namespace WellCarePharmacyWebapi.Controllers
 
 
         [HttpGet("GetAllOrders")]
-       // [Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrdersRequest>>> GetAllOrders()
         {
@@ -40,7 +40,7 @@ namespace WellCarePharmacyWebapi.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("id", Name = "GetOrder")]
@@ -64,7 +64,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpPost("AddOrder")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -124,7 +124,7 @@ namespace WellCarePharmacyWebapi.Controllers
         }
 
         [HttpDelete("id")]
-      //  [Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

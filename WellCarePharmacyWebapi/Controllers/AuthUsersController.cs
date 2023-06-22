@@ -7,7 +7,7 @@ using System.Text;
 using WellCarePharmacyWebapi.Business_Logic_Layer.DTO;
 using WellCarePharmacyWebapi.Models.Context;
 using WellCarePharmacyWebapi.Models.Entities;
-
+using WellCarePharmacyWebapi.Models.Repository.Interfaces;
 
 namespace WellCarePharmacyWebapi.Controllers
 {
@@ -17,11 +17,13 @@ namespace WellCarePharmacyWebapi.Controllers
     {
         private readonly WellCareDC _repositoryWrapper;
         public IConfiguration _configuration;
+        private readonly IRepositoryWrapper _repositoryWrapper1;
 
-        public AuthUsersController(WellCareDC repositoryWrapper, IConfiguration configuration)
+        public AuthUsersController(WellCareDC repositoryWrapper,IRepositoryWrapper repositoryWrapper1, IConfiguration configuration)
         {
             _repositoryWrapper = repositoryWrapper;
             _configuration = configuration;
+            _repositoryWrapper1 = repositoryWrapper1;
         }
 
 
@@ -59,7 +61,7 @@ namespace WellCarePharmacyWebapi.Controllers
                         var roleid = user.RoleId;
                         var userid = user.Id;
                         var expires = DateTime.Now.AddMinutes(60);
-                        return Ok(new {Token,roleid, userid, expires});
+                        return Ok(new { Token, roleid, userid, expires });
                     }
                     return BadRequest("Invalid credentials");
                 }
@@ -81,6 +83,11 @@ namespace WellCarePharmacyWebapi.Controllers
                 if (registration == null)
                 {
                     return BadRequest(registration);
+                }
+                var existingUser = await _repositoryWrapper.Users.FirstOrDefaultAsync(u => u.Email == registration.Email);
+                if (existingUser != null)
+                {
+                    return Conflict("Email is already existed");
                 }
                 User users = new User()
                 {

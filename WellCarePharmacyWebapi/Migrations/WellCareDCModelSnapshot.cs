@@ -22,21 +22,6 @@ namespace WellCarePharmacyWebapi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdersId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("OrderProduct");
-                });
-
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -45,11 +30,11 @@ namespace WellCarePharmacyWebapi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("int");
 
                     b.Property<int>("UsersId")
                         .HasColumnType("int");
@@ -130,6 +115,32 @@ namespace WellCarePharmacyWebapi.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.ProductOrder", b =>
+                {
+                    b.Property<int>("ProductOrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductOrderId"), 1L, 1);
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductOrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductOrder");
+                });
+
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -197,21 +208,6 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Order", b =>
                 {
                     b.HasOne("WellCarePharmacyWebapi.Models.Entities.User", "Users")
@@ -223,6 +219,25 @@ namespace WellCarePharmacyWebapi.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.ProductOrder", b =>
+                {
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Order", "Order")
+                        .WithMany("ProductOrders")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WellCarePharmacyWebapi.Models.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.User", b =>
                 {
                     b.HasOne("WellCarePharmacyWebapi.Models.Entities.Role", "Roles")
@@ -232,6 +247,11 @@ namespace WellCarePharmacyWebapi.Migrations
                         .IsRequired();
 
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("WellCarePharmacyWebapi.Models.Entities.Order", b =>
+                {
+                    b.Navigation("ProductOrders");
                 });
 #pragma warning restore 612, 618
         }
